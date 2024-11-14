@@ -1,15 +1,18 @@
-import Image from "next/image";
+'use client';
+import axios from 'axios';
 
 export default function Home() {
 
-  function handleTiktokLogin(ev: React.MouseEvent<HTMLButtonElement>) {
+  async function handleTiktokLogin(ev: React.MouseEvent<HTMLButtonElement>) {
     ev.preventDefault();
+    
+    try {
+      const response = await axios.get('http://localhost:3000/api/tiktok-oauth');
+    } catch ( error ) {
+      console.log(error);
+      alert("error");
+    }
 
-    fetch("/api/tiktok-oauth/route")
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-      });
   }
 
   return (
