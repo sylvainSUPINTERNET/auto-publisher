@@ -1,23 +1,17 @@
-'use client';
-import axios from 'axios';
+import Link from 'next/link';
 
-export default function Home() {
-
-  async function handleTiktokLogin(ev: React.MouseEvent<HTMLButtonElement>) {
-    ev.preventDefault();
-    
-    try {
-      const response = await axios.get('http://localhost:3000/api/tiktok-oauth');
-    } catch ( error ) {
-      console.log(error);
-      alert("error");
-    }
-
-  }
+export default async function Home() {
+  
+  let data = await fetch(`${process.env.SERVER_ACTION_URL}/api/oauth2/tiktok/authorization`, {
+    method: "GET",
+    cache: 'no-store'
+  });
+  let {url: urlAuthorization} = await data.json()
 
   return (
     <div>
-      <button onClick={handleTiktokLogin}>TikTok login</button>
+      <Link href={urlAuthorization}>Tiktok Login</Link>
     </div>
   );
+
 }

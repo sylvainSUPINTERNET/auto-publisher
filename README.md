@@ -1,3 +1,20 @@
+
+LOCAL : 
+
+```` bash 
+
+# use this for token same domain
+
+http://perso.lvh.me:3000
+
+
+
+# for company CA blocked : 
+$env:NODE_TLS_REJECT_UNAUTHORIZED="0"
+````
+
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started

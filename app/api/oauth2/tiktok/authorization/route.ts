@@ -1,13 +1,16 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET( req: NextRequest ) {
 
+    const cookieStore = await cookies()
 
     const csrfState = Math.random().toString(36).substring(2);
-
-    const response = NextResponse.next()
-
-    response.cookies.set('csrfState', csrfState, { maxAge: 60000 });
+    cookieStore.set('csrfState', csrfState,
+        { 
+            maxAge: 60000
+        }
+     );
 
     let url = 'https://www.tiktok.com/v2/auth/authorize/';
     url += `?client_key=${process.env.OAUTH2_TIKTOK_CLIENT_ID}`;
@@ -16,6 +19,5 @@ export async function GET( req: NextRequest ) {
     url += `&redirect_uri=${process.env.OAUTH2_TIKTOK_REDIRECT_URI}`;
     url += '&state=' + csrfState;
 
-
-    return NextResponse.redirect(url);
+    return NextResponse.json({ url }, { status: 200 });
 }
