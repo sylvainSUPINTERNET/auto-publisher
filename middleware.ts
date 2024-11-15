@@ -1,23 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
+import { cookies } from 'next/headers';
+import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
-export function middleware(request: NextRequest) {
-    const response = NextResponse.next();
+const protectedRoutes = new Set(['/dashboard']);
 
-    console.log("MIDDLEWARE")
-    // response.cookies.set('access_token_link', 'my_token_value', {
-    //     httpOnly:true,
-    //     secure:true,
-    //     sameSite:'strict',
-    //     //maxAge -> use plaid expiration ( access_token never expired i think)
-    // });
+export async function middleware(request: NextRequest) {
+    const response: NextResponse = NextResponse.next();
+    const cookieStore = await cookies();
 
-    // console.info("middleware");
-    // // TODO attach cookie shiet here
+
+    if (protectedRoutes.has(request.nextUrl.pathname)) {
+        return isLogged(cookieStore, request);
+    }
+
     return response;
 }
 
 
- 
-export const config = {
-    matcher: '/',
+function isLogged(cookieStore:ReadonlyRequestCookies, request:NextRequest) {
+    if ( !cookieStore.get('access_token') || !cookieStore.get('refresh_token') ) {
+        return NextResponse.redirect(new URL('/login', request.url))
+    }
+
+    // TODO => add verification on the token validity
 }
+
+ 
+// export const config = {
+//     matcher: '/',
+// }
