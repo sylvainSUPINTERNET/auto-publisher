@@ -9,8 +9,9 @@ export default async function Dashboard() {
   const cookieStore = await cookies();
   const {access_token: accessToken} = await getTokens(cookieStore);
 
+  
 
-  const userInfosResponse = await fetch("https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name", 
+  const userInfosResponse = await fetch("https://open.tiktokapis.com/v2/user/info/?fields=open_id,union_id,avatar_url,display_name,follower_count,likes_count,video_count,is_verified,following_count", 
     {
       headers: {
         'Authorization': `Bearer ${accessToken}`
