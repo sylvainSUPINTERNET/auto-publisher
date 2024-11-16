@@ -40,6 +40,20 @@ export async function GET(req: NextRequest) {
       secure: process.env.ENV === "local" ? false : true // https only
     });
 
+    resp.cookies.set('refresh_expires_in', (Date.now() + (data.refresh_expires_in*1000)) as any , {
+      maxAge: data.refresh_expires_in,
+      httpOnly: true,
+      sameSite: 'lax', // oauth2 not possible with strict
+      secure: process.env.ENV === "local" ? false : true // https only
+    }); 
+    
+    resp.cookies.set('expires_in', (Date.now() + (data.expires_in*1000)) as any, {
+      maxAge: data.expires_in,
+      httpOnly: true,
+      sameSite: 'lax', // oauth2 not possible with strict
+      secure: process.env.ENV === "local" ? false : true // https only
+    });
+
     return resp;
   } catch (e) {
     console.error(e);
