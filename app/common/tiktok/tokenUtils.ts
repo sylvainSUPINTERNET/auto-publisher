@@ -2,6 +2,14 @@ import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adap
 
 const TEN_MINUTES = 10 * 60; // 10 minutes in seconds
 
+
+export async function getTokens(cookieStore:ReadonlyRequestCookies): Promise<{access_token:string}> {
+    return {
+        access_token: cookieStore.get('access_token')?.value as string,
+    }   
+}
+
+
 export async function tokensValid(cookieStore:ReadonlyRequestCookies): Promise<boolean> {
     if ( !cookieStore.get('access_token') || !cookieStore.get('refresh_token') || !cookieStore.get('expires_in') || !cookieStore.get('refresh_expires_in') ) {
         console.info('tokens invalid : missing');
