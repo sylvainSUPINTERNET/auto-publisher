@@ -12,7 +12,8 @@ export async function middleware(request: NextRequest) {
 
 
     if (protectedRoutes.has(request.nextUrl.pathname)) {
-        if ( !tokensValid(cookieStore) ) {
+        const isValid = await tokensValid(cookieStore);
+        if ( !isValid ) {
             return NextResponse.redirect(new URL('/login', request.url))
         }
     }

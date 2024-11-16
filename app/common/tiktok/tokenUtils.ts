@@ -2,15 +2,27 @@ import { ReadonlyRequestCookies } from "next/dist/server/web/spec-extension/adap
 
 const TEN_MINUTES = 10 * 60; // 10 minutes in seconds
 
-export async function tokensValid(cookieStore:ReadonlyRequestCookies) {
+export async function tokensValid(cookieStore:ReadonlyRequestCookies): Promise<boolean> {
     if ( !cookieStore.get('access_token') || !cookieStore.get('refresh_token') || !cookieStore.get('expires_in') || !cookieStore.get('refresh_expires_in') ) {
         console.info('tokens invalid : missing');
+
+        cookieStore.delete('access_token');
+        cookieStore.delete('refresh_token');
+        cookieStore.delete('expires_in');
+        cookieStore.delete('refresh_expires_in');
+
         return false;
     } else if (  tokenExpired(cookieStore) ) {
         console.info('tokens expired');
 
         const refreshData = await refreshToken(cookieStore);
         if ( refreshData === null ) {
+            
+        cookieStore.delete('access_token');
+        cookieStore.delete('refresh_token');
+        cookieStore.delete('expires_in');
+        cookieStore.delete('refresh_expires_in');
+
             return false;
         }
         
