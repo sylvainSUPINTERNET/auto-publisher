@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
       throw new Error(data.error || 'Failed to fetch tokens');
     }
 
-    const resp = NextResponse.redirect(new URL('http://local.dev.sylvain:3000/dashboard', req.url));
+    const resp = NextResponse.redirect(new URL(`${process.env.REDIRECT_URL_AFTER_LOGGED}`, req.url));
 
     resp.cookies.set('access_token', data.access_token, {
       maxAge: data.expires_in,
