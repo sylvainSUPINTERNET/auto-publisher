@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import Logout from "../components/logout.component";
 import { getTokens } from "../common/tiktok/tokenUtils";
+import DirectUpload from "../components/tiktok/direct.upload.component";
 
 export default async function Dashboard() {
   
@@ -31,7 +32,9 @@ export default async function Dashboard() {
       <h1 className="text-bold text-4xl">
         Dashboard
       </h1>
-      <Logout></Logout>
+
+      <DirectUpload accessToken={accessToken}/>
+      <Logout/>
     </div>
   );
 
