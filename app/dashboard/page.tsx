@@ -32,7 +32,6 @@ export default async function Dashboard() {
       <h1 className="text-bold text-4xl">
         Dashboard
       </h1>
-
       <DirectUpload accessToken={accessToken}/>
       <Logout/>
     </div>
